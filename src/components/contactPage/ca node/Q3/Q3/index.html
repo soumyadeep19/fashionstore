@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Homepage</title>
+  </head>
+  <body>
+    <h1>Welcome to the homepage</h1>
+    <a href="/contact">Contact us</a>
+    <br>
+    <a href="/support">Support</a>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      socket.on('chat message', (msg) => {
+        const li = document.createElement('li');
+        li.textContent = msg;
+        document.getElementById('messages').appendChild(li);
+      });
+
+      function sendMessage() {
+        const input = document.getElementById('messageInput');
+        const message = input.value;
+        input.value = '';
+        socket.emit('chat message', message);
+      }
+    </script>
+
+    <ul id="messages"></ul>
+    <input type="text" id="messageInput">
+    <button onclick="sendMessage()">Send</button>
+  </body>
+</html>
